@@ -1,6 +1,6 @@
 # dealsdray
 
-A new Flutter project.
+Flutter project task 
 
 ## Screen Shots
 
