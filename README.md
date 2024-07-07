@@ -1,16 +1,16 @@
 # dealsdray
 
-A new Flutter project.
+Flutter project task 
 
-## Getting Started
+## Screen Shots
 
-This project is a starting point for a Flutter application.
+<img src="https://github.com/Pratikdate/dealsdray/blob/def313520a7864e8e07c37560b1a47d717acb356/Screenshot_2024-07-07-16-29-15-157_com.example.dealsdray.jpg" alt="image"  border="0" />
 
-A few resources to get you started if this is your first Flutter project:
+<img src="https://github.com/Pratikdate/dealsdray/blob/def313520a7864e8e07c37560b1a47d717acb356/Screenshot_2024-07-07-16-29-49-169_com.example.dealsdray.jpg" alt="image"  border="0" />
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+<img src="https://github.com/Pratikdate/dealsdray/blob/def313520a7864e8e07c37560b1a47d717acb356/Screenshot_2024-07-07-16-35-57-035_com.example.dealsdray.jpg" alt="image"  border="0" />
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<img src="https://github.com/Pratikdate/dealsdray/blob/9b8d528b9ef9191e70f0e2d83002366134f2b480/Screenshot_2024-07-07-16-45-37-898_com.example.dealsdray.jpg"/>
+
+
+
