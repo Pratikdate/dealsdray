@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:dealsdray/Screens/DashboardScreen.dart';
+import 'package:dealsdray/Screens/RegistrationScreen.dart';
 import 'package:dealsdray/Screens/homeScreen.dart';
 import 'package:dealsdray/Screens/verificationScreen.dart';
 import 'package:get/get.dart';
@@ -33,34 +35,40 @@ class _SendCodeScreenState extends State<SendCodeScreen> {
   Future<void> createUserId() async {
     final String apiUrl = 'http://devapiv4.dealsdray.com/api/v2/user/otp';
     final String deviceId = deviceController.DeviceID;
+    try{
+      final Map<String, String> body = {
+        _isPhoneSelected ? 'mobileNumber' : 'email': _isPhoneSelected ? _phoneController.text : _emailController.text,
+        'deviceId': deviceId,
+      };
+      if (_phoneController.text == null || deviceId == null) {
+        print('Error: mobileNumber or deviceId is null');
+        return;
+      }
 
-    final Map<String, String> body = {
-      _isPhoneSelected ? 'mobileNumber' : 'email': _isPhoneSelected ? _phoneController.text : _emailController.text,
-      'deviceId': deviceId,
-    };
-    if (_phoneController.text == null || deviceId == null) {
-      print('Error: mobileNumber or deviceId is null');
-      return;
-    }
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(body),
+      );
 
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(body),
-    );
+      if (response.statusCode == 200) {
+        // Handle success response
 
-    if (response.statusCode == 200) {
-      // Handle success response
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        print('OTP sent successfully: ${responseData['message']}');
+        // Process other fields as needed
+      } else {
+        // Handle error response
+        print(deviceId);
+        print(_phoneController.text);
+        print('Failed to send OTP: ${response.body}');
+      }
 
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      print('OTP sent successfully: ${responseData['message']}');
-      // Process other fields as needed
-    } else {
-      // Handle error response
-      print(deviceId);
-      print(_phoneController.text);
-      print('Failed to send OTP: ${response.body}');
-    }
+
+    }catch(e){}
+
+
+
   }
 
   @override
@@ -192,7 +200,7 @@ class _SendCodeScreenState extends State<SendCodeScreen> {
                 SizedBox(height: 30),
                 TextButton(
                   onPressed: () async {
-                    await createUserId();
+                    createUserId();
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (BuildContext context) => OtpVerificationScreen()),
@@ -210,26 +218,26 @@ class _SendCodeScreenState extends State<SendCodeScreen> {
                     ),
                   ),
                 ),
-                TextButton(
-                  onPressed: () async {
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (BuildContext context) => HomeScreen()),
-                    );
-                  },
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.redAccent,
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 60),
-                    child: const Text(
-                      'Home screen',
-                      style: TextStyle(color: Colors.white, fontSize: 20.0),
-                    ),
-                  ),
-                ),
+                // TextButton(
+                //   onPressed: () async {
+                //
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(builder: (BuildContext context) => DashboardScreen()),
+                //     );
+                //   },
+                //   child: Container(
+                //     decoration: const BoxDecoration(
+                //       borderRadius: BorderRadius.all(Radius.circular(10)),
+                //       color: Colors.redAccent,
+                //     ),
+                //     padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 60),
+                //     child: const Text(
+                //       'Home screen',
+                //       style: TextStyle(color: Colors.white, fontSize: 20.0),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ],

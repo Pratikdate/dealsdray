@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dealsdray/Screens/DashboardScreen.dart';
 import 'package:dealsdray/Screens/homeScreen.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -42,51 +43,50 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   Future<void> registerUser(String email, String password, String referralCode) async {
     final String apiUrl = 'http://devapiv4.dealsdray.com/api/v2/user/email/referral';
+    try{
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'email': email,
+          'password': password,
+          'referralCode': referralCode,
+          'userId': user_controller.UserID
+        }),
+      );
 
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
-        'email': email,
-        'password': password,
-        'referralCode': referralCode,
-        'userId': user_controller.UserID
-      }),
-    );
+      if (response.statusCode == 200) {
+        setState(() {
+          UserCreated = true;
+        });
+        print('Registration successful');
+      } else {
+        setState(() {
+          UserCreated = false;
+        });
+        print('Registration failed: ${response.body}');
+      }
+    }catch(e){}
 
-    if (response.statusCode == 200) {
-      setState(() {
-        UserCreated = true;
-      });
-      print('Registration successful');
-    } else {
-      setState(() {
-        UserCreated = false;
-      });
-      print('Registration failed: ${response.body}');
-    }
   }
 
   void _handleRegistration() async {
     if (_formKey.currentState?.validate() ?? false) {
-      await registerUser(
+      registerUser(
         _emailController.text,
         _passwordController.text,
         _referralController.text,
       );
 
-      if (UserCreated) {
+
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => DashboardScreen()),
         );
-      } else {
-        setState(() {
-          _validate = true;
-        });
-      }
+
+      
     }
   }
 

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dealsdray/Screens/DashboardScreen.dart';
+import 'package:dealsdray/Screens/RegistrationScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_countdown_timer/countdown_timer_controller.dart';
 import 'package:flutter_countdown_timer/flutter_countdown_timer.dart';
@@ -75,35 +76,39 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
 
   Future<void> verifyOtp(String otp) async {
     final String apiUrl = 'http://devapiv4.dealsdray.com/api/v2/user/otp/verification';
-    final String deviceId = device_controller.DeviceID; // Fetch the device ID
-    final String userId = user_controller.UserID; // Fetch the user ID
 
-    final response = await http.post(
-      Uri.parse(apiUrl),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
-        "otp": otp,
-        "deviceId": deviceId,
-        "userId": userId,
-      }),
-    );
+    try{
+      final String deviceId = device_controller.DeviceID ; // Fetch the device ID
+      final String userId = user_controller.UserID ; // Fetch the user ID
 
-    if (response.statusCode == 200) {
-      // Handle success response
-      final Map<String, dynamic> responseData = jsonDecode(response.body);
-      print('OTP verified successfully: ${responseData}');
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => DashboardScreen()),
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          "otp": otp,
+          "deviceId": deviceId,
+          "userId": userId,
+        }),
       );
-    } else {
-      // Handle error response
-      print(deviceId);
-      print(userId);
-      print('Failed to verify OTP: ${response.body}');
-    }
+
+      if (response.statusCode == 200) {
+        // Handle success response
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        print('OTP verified successfully: ${responseData}');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => DashboardScreen()),
+        );
+      } else {
+        // Handle error response
+        print(deviceId);
+        print(userId);
+        print('Failed to verify OTP: ${response.body}');
+      }
+    }catch(e){}
+    Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => RegistrationScreen()));
   }
 
   void _verifyOtp() {
